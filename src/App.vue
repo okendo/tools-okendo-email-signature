@@ -57,9 +57,9 @@ export default {
     return {
       form: {
         headshotUrl: '',
-        name: '',
-        jobTitle: '',
-        email: '',
+        name: 'Human Person',
+        jobTitle: 'Human Things',
+        email: 'noreply@okendo.io',
         phone: '+',
         address: 'miami'
       }
