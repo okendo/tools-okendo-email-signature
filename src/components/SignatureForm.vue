@@ -1,42 +1,108 @@
 <template>
   <form class="form">
 
-    <div class="field field-text">
+    <div class="field">
+      <div class="field-label">Headshot</div>
+      <div class="field-desc">Upload a square headshot (PNG preferred).</div>
+      <headshot-picker v-model="form.headshotUrl"></headshot-picker>
+    </div>
+
+    <div class="field">
       <div class="field-label">Full Name <span class="required">*</span></div>
       <div class="field-error" v-show="nameError" v-html="nameError"></div>
-      <div class="field-control">
+      <div class="field-control field-text">
         <input type="text" autocomplete="name" v-model="form.name" v-on:blur="nameBlured = true;" />
       </div>
     </div>
 
-    <div class="field field-text">
+    <div class="field">
       <div class="field-label">Job Title <span class="required">*</span></div>
       <div class="field-error" v-show="jobTitleError" v-html="jobTitleError"></div>
-      <div class="field-control">
+      <div class="field-control field-text">
         <input type="text" autocomplete="organization-title" v-model="form.jobTitle" v-on:blur="jobTitleBlured = true;" />
       </div>
     </div>
 
-    <div class="field field-text">
-      <div class="field-label">Mobile Number</div>
-      <div class="field-desc">Enter in the order of country code, area code, number. Use dashes between each section.</div>
-      <div class="field-error" v-show="mobileError" v-html="mobileError"></div>
-      <div class="field-control">
-        <input type="text" autocomplete="tel" v-model="form.mobile" v-on:blur="mobileBlured = true;" />
+    <div class="field">
+      <div class="field-label">Email</div>
+      <div class="field-error" v-show="emailError" v-html="emailError"></div>
+      <div class="field-control field-text">
+        <input type="text" autocomplete="email" v-model="form.email" v-on:blur="emailBlured = true;" />
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Phone</div>
+      <div class="field-desc">Enter in the order: country code, area code, number. Use dashes between each number group.</div>
+      <div class="field-error" v-show="phoneError" v-html="phoneError"></div>
+      <div class="field-control field-text">
+        <input type="text" autocomplete="tel" v-model="form.phone" v-on:blur="phoneBlured = true;" />
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Address <span class="required">*</span></div>
+      <div class="field-control field-select">
+        <select v-model="form.address" v-on:blur="addressBlured = true;">
+          <option value="miami">
+            Level 8, 360 NW 27th Street, Miami, 33127
+          </option>
+          <option value="sydney">
+            Level 13, 333 George Street, Sydney, 2000
+          </option>
+        </select>
       </div>
     </div>
 
     <div class="field field-submit">
-        <button type="button" :title="btnTitle" :disabled="formValid === false" class="btn primary-btn" @click.prevent="copySignature()">{{ copySignatureBtnText }}</button>
-        <button type="button" :title="btnTitle" :disabled="formValid === false" class="btn secondary-btn" @click.prevent="copyHtml()">{{ copyHtmlBtnText }}</button>
+      <button type="button" :disabled="formValid === false" class="btn" @click.prevent="copySignature()">
+        {{ copySignatureBtnText }}
+      </button>
+      <button type="button" :disabled="formValid === false" class="btn" @click.prevent="copyHtml()">
+        {{ copyHtmlBtnText }}
+      </button>
+    </div>
+
+    <hr>
+
+    <div class="field">
+      <div class="field-heading">How to add your signature to Gmail</div>
+      <div class="field-paragraph">
+        <ol>
+          <li>Click on the <strong>Copy Signature</strong> button above and go to your <a href="https://mail.google.com/mail/u/0/#settings/general" target="_blank" rel="noopener noreferrer">Okendo Gmail account settings</a>.</li>
+          <li>Select the settings gear in your Gmail toolbar in the top-right.</li>
+          <li>Select <strong>See All Settings > General > Signature</strong>.</li>
+          <li>Select the <strong>Create New</strong> button to add a new signature.</li>
+          <li>Give this signature a name and select <strong>Create</strong>.</li>
+          <li>Paste the signature into the WYSIWYG editor.</li>
+          <li>Select your new signature under <strong>Signature defaults</strong>.</li>
+          <li>Scroll to the bottom and select <strong>Save Changes</strong>.</li>
+        </ol>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="field">
+      <div class="field-heading">How to add your signature to HubSpot</div>
+      <div class="field-paragraph">
+        <ol>
+          <li>Click on the <strong>Copy HTML</strong> button above (HTML works best for HubSpot's email signature editor).</li>
+          <li>Follow the remaing steps as detailed in <a href="https://knowledge.hubspot.com/account/add-an-email-signature-in-the-crm" target="_blank" rel="noopener noreferrer">HubSpot's documentation</a>.</li>
+        </ol>
+      </div>
     </div>
 
   </form>
 </template>
 
 <script>
+import HeadshotPicker from './HeadshotPicker.vue';
 
 export default {
+  components: {
+    HeadshotPicker
+  },
   name: 'SignatureForm',
   props: [
     'form'
@@ -46,9 +112,12 @@ export default {
       nameBlured: false,
       jobTitleBlured: false,
       officeBlured: false,
-      mobileBlured: false,
+      emailBlured: false,
+      phoneBlured: false,
+      addressBlured: false,
       copiedHtml: false,
-      copiedSignature: false
+      copiedSignature: false,
+      uploadedHeadshot: null
     }
   },
   mounted() {
@@ -61,10 +130,10 @@ export default {
       let form = this.form;
       localStorage.setItem('form', JSON.stringify(form));
     },
-    copySignature: function() {
+    copySignature() {
       let element = this.$parent.$refs.preview;
 
-      if ( ! element ) {
+      if (!element) {
         alert('Preview element not yet ready');
         return false;
       }
@@ -76,8 +145,6 @@ export default {
         document.execCommand('copy');
 
       } else if (window.getSelection) {
-        // let tWidth = element.$el.children[0].clientWidth;
-        // element.$el.children[0].style.width = (tWidth + 100) + 'px';
         let selection = window.getSelection();        
         let range = document.createRange();
         range.selectNodeContents(element.$el);
@@ -91,10 +158,10 @@ export default {
       this.copiedSignature = true;
       setTimeout(() => { this.copiedSignature = false }, 2000)
     },
-    copyHtml: function() {
+    copyHtml() {
       let element = this.$parent.$refs.preview;
 
-      if ( ! element ) {
+      if (!element) {
         alert('Preview element not yet ready');
         return false;
       }
@@ -122,59 +189,53 @@ export default {
     }
   },
   computed: {
-    nameError() {
-      if ( ! this.nameBlured && ! this.jobTitleBlured  && ! this.officeBlured  && ! this.mobileBlured ) {
-        return '';
+    emailError() {
+      const email = this.form.email.trim();
+      const emailPattern = /\S+@\S.\S/;  
+      if (emailPattern.test(email) == false && email) {
+        return 'Please enter a valid email.';
       }
 
-      var value = this.form.name.trim();
-      if ( ! value ) {
+      return '';
+    },
+    nameError() {
+      if (!this.form.name.trim()) {
         return 'Please fill in your name.';
       }
 
       return '';
     },
     jobTitleError() {
-      if ( ! this.jobTitleBlured && ! this.officeBlured  && ! this.mobileBlured ) {
-        return '';
-      }
-
-      var value = this.form.jobTitle.trim();
-      if ( ! value ) {
+      if (!this.form.jobTitle.trim()) {
         return 'Please fill in your job title.';
       }
 
       return '';
     },
-    mobileError() {
-      var value = this.form.mobile.trim();
-      if ( ! value || value === '+' || ! this.mobileBlured ) {
-        return '';
-      }
-
-      var phoneNumberPattern = /^\+?[0-9-]+$/;  
-      if ( phoneNumberPattern.test( value ) == false ) {
+    phoneError() {
+      const phone = this.form.phone.trim();
+      const phoneNumberPattern = /^\+?[0-9-]+$/;  
+      if (phoneNumberPattern.test(phone) == false && phone) {
         return 'Numbers only, use dashes to separate.';
       }
 
       return '';
     },
-
-    btnTitle() {
-      return this.formValid ? '' : 'Please fill up the form first.'
-    },
     copySignatureBtnText() {
-      return this.copiedSignature ? 'Copied' : 'Copy Signature'
+      return this.copiedSignature ? 'Copied!' : 'Copy Signature'
     },
     copyHtmlBtnText() {
-      return this.copiedHtml ? 'Copied' : 'Copy HTML'
+      return this.copiedHtml ? 'Copied!' : 'Copy HTML'
+    },
+    updateGmailSignatureText() {
+      return this.uploadedGmailSignature ? 'Updated!' : 'Update Gmail Signature'
     },
     formValid() {
-      if ( ! this.form.name) {
+      if (!this.form.name) {
         return false;
       }
 
-      if ( ! this.form.jobTitle.trim() ) {
+      if (!this.form.jobTitle.trim()) {
         return false;
       }
 
@@ -187,9 +248,7 @@ export default {
 <style>
 /* Form */
 .form .field {
-    margin: 0 0 24px;
-    padding: 0 0 24px;
-    border-bottom: 1px solid #F4F4F4;
+    margin: 0 0 32px;
 }
 .form .field:last-child {
     border: none;
@@ -208,6 +267,14 @@ export default {
 .form .field-desc {
     color: #1D2135;
     margin: 0 0 8px;
+}
+.form .field-heading {
+    color: #1D2135;
+    font: 700 20px 'Mulish', sans-serif;
+    margin: 0 0 16px;
+}
+.form .field-paragraph {
+    line-height: 1.75;
 }
 .form .required,
 .form .field-error {
@@ -229,7 +296,16 @@ export default {
     background: #FFF;
     border: none;
     font: 400 16px 'Noto Sans', sans-serif;
+    outline: none;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1),
+                0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.form .field-control select:focus,
+.form .field-control input[type="text"]:focus,
+.form .field-control input[type="email"]:focus,
+.form .field-control input[type="url"]:focus,
+.form .field-control input[type="tel"]:focus {
+    box-shadow: 0 0 0 2px #1D2135,
                 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 @media(max-width: 479px) {
@@ -251,16 +327,38 @@ export default {
     -webkit-appearance:none; /* Safari and Chrome */
     appearance:none;
 }
-.field-select .field-control::after {
-    top: 50%;
-    margin-top: -3.5px;
-    content: " ";
-    right: 20px;
-    width: 10px;
-    height: 7px;
+.field-select::after {
+    content: '';
     display: block;
     position: absolute;
-    background: url('../assets/dropdown.svg') no-repeat;
+    margin-top: -8px;
+    top: 50%;
+    right: 12px;
+    width: 16px;
+    height: 16px;
+    background: center / 12px no-repeat url('../assets/dropdown.svg');
+    pointer-events: none;
+}
+.form .btn {
+    font: 700 16px 'Mulish', sans-serif;
+    color: #fff;
+    padding: 16px;
+    position: relative;
+    border-radius: 8px;
+    letter-spacing: 0.01em;
+    background: #1D2135;
+    border: none;
+    outline: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+.form .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.form .btn:focus {
+    box-shadow: inset 0 0 0 2px #1D2135,
+                inset 0 0 0 4px #fff;
 }
 .form .field-submit button {
     margin-right: 20px;

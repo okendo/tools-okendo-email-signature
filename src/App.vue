@@ -56,9 +56,12 @@ export default {
   data() {
     return {
       form: {
+        headshotUrl: '',
         name: '',
         jobTitle: '',
-        mobile: '+',
+        email: '',
+        phone: '+',
+        address: 'miami'
       }
     }
   }
@@ -66,7 +69,7 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@700&family=Noto+Sans:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@700&family=Noto+Sans:wght@400;700&display=swap');
 
 body {
     margin: 0;
@@ -83,11 +86,25 @@ body {
     padding: 0 24px;
     max-width: 1080px;
 }
-
+a {
+    color: #00B69C;
+}
+a:focus {
+    color: #1D2135 !important;
+    background: #00eab6;
+    text-decoration: none;
+    box-shadow: 0 2px #1D2135;
+}
 h1,h2,h3,h4,h5,h6 {
     font-weight: 700;
     font-family: 'Mulish', sans-serif;
     margin: 8px 0 16px;
+}
+hr {
+    background: #F4F4F4;
+    border: none;
+    height: 2px;
+    margin: 24px 0;
 }
 ol {
     margin: 0;
@@ -109,7 +126,7 @@ ol li:last-child {
 }
 .box-heading {
     padding: 16px 24px;
-    border-bottom: 1px solid #F4F4F4;
+    border-bottom: 2px solid #F4F4F4;
 }
 .box-heading h2 {
     font-size: 18px;
@@ -119,39 +136,14 @@ ol li:last-child {
     padding: 24px;
 }
 
-/* Button */
-.btn {
-    font: 700 16px 'Mulish', sans-serif;
-    color: #fff;
-    padding: 16px;
-    position: relative;
-    border-radius: 4px;
-    letter-spacing: 0.01em;
-    background: #1D2135;
-    border: none;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-    cursor: pointer;
-}
-.btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-.primary-btn {
-    color: #FFF;
-    background: #1D2135;
-}
-.secondary-btn{
-    color: #1D2135;
-    background: #FFF;
-}
-
 /* Header */
 .header {
     display: flex;
     align-items: center;
     background: #1D2135;
     padding: 24px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1),
+                0px 4px 8px rgba(0, 0, 0, 0.15);
 }
 .header .logo {
     height: 40px;
