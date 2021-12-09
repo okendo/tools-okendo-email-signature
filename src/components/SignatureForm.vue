@@ -5,9 +5,11 @@
       <div class="field-label">Import Details</div>
       <div class="field-desc">Automatically import details from your Okendo Google account.</div>
       <div class="field-error" v-show="googleError" v-html="googleError"></div>
-      <button type="button" class="btn btn-google" @click.prevent="importFromGoogle()">
-        {{ importFromGoogleBtnText }}
-      </button>
+      <div class="field-control field-text">
+        <button type="button" class="btn btn-google" @click.prevent="importFromGoogle()">
+          {{ importFromGoogleBtnText }}
+        </button>
+      </div>
     </div>
 
     <hr>
@@ -156,6 +158,7 @@ export default {
           setTimeout(() => { this.importedGoogleDetails = false }, 2000);
         })
         .catch((error) => {
+          console.log(error);
           this.googleErrorState = error;
         });
     },
@@ -264,11 +267,11 @@ export default {
       if (this.googleErrorState) {
         switch (this.googleErrorState) {
           case 'popup_closed_by_user':
-            return 'Pop-up closed too quickly, import failed!';
+            return 'Pop-up closed too quickly and import failed, please try again!';
           case 'access_denied':
-            return 'Access was denied, import failed!';
+            return 'Access was denied and import failed, please try again!';
           default:
-            return 'Failed to import Google details, try again later!';
+            return 'Failed to import Google details, please try again!';
         }
       }
       return '';
@@ -428,10 +431,11 @@ export default {
     pointer-events: none;
 }
 .form .btn {
+    position: relative;
+    margin: 8px 0;
     font: 700 16px 'Mulish', sans-serif;
     color: #fff;
     padding: 16px;
-    position: relative;
     border-radius: 8px;
     letter-spacing: 0.01em;
     background: #1D2135;
