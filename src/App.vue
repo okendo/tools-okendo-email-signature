@@ -3,6 +3,9 @@
     <header class="header">
       <div class="container">
         <LogoFile class="logo" />
+        <h1 class="heading">
+          Email Signature Generator
+        </h1>
       </div>
     </header>
     <main class="main">
@@ -11,7 +14,7 @@
           <div class="form-section">
             <div class="box">
               <div class="box-heading">
-                <h2>Enter Details</h2>
+                <h2>Your Details</h2>
               </div>
               <div class="box-content">
                 <SignatureForm 
@@ -27,10 +30,10 @@
                 <h2>Signature Preview</h2>
                 </div>
                 <div class="box-content">
-                <SignaturePreview 
-                  :form="form"
-                  ref="preview"
-                />
+                  <SignaturePreview 
+                    :form="form"
+                    ref="preview"
+                  />
                 </div>
               </div>
             </div>
@@ -45,6 +48,7 @@
 import LogoFile from './assets/logo.svg?inline'
 import SignatureForm from './components/SignatureForm.vue'
 import SignaturePreview from './components/SignaturePreview.vue'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'App',
@@ -64,13 +68,24 @@ export default {
         address: 'miami'
       }
     }
-  }
+  },
+  mounted() {
+    this.initializeGAPI().then(() => {
+      this.form.headshotUrl = this.userHeadshotUrl;
+      this.form.name = this.userName;
+      this.form.email = this.userEmail;
+    });
+  },
+  methods: mapActions(['initializeGAPI']),
+  computed: mapGetters({
+    userHeadshotUrl: 'userImage',
+    userName: 'userName',
+    userEmail: 'userEmail'
+  })
 }
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@700&family=Noto+Sans:wght@400;700&display=swap');
-
 body {
     margin: 0;
     padding: 0;
@@ -116,9 +131,8 @@ ol li {
 ol li:last-child {
     margin-bottom: 0;
 }
-.spacer {
-    height: 24px;
-}
+
+/* Box */
 .box {
     border-radius: 8px;
     background: #fff;
@@ -138,15 +152,24 @@ ol li:last-child {
 
 /* Header */
 .header {
-    display: flex;
-    align-items: center;
     background: #1D2135;
     padding: 24px;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1),
                 0px 4px 8px rgba(0, 0, 0, 0.15);
 }
+.header .container {
+    display: flex;
+    align-items: center;
+}
 .header .logo {
-    height: 40px;
+    height: 32px;
+    margin-right: 24px;
+}
+.header .heading {
+    line-height: 26px;
+    font-size: 22px;
+    color: #fff;
+    margin: 0;
 }
 
 /* Main */
@@ -155,16 +178,17 @@ ol li:last-child {
 }
 .main .form-section {
     width: 480px;
-    max-width: 100%;
 }
-.main .preview{
+.main .preview {
     min-width: 450px;
 }
 @media (max-width: 919px) {
+    .main .form-section {
+        width: 100%;
+    }
     .main .preview-section {
         margin-top: 24px;
         overflow: hidden;
-        overflow-x: auto;
     }
     .preview-sticky {
         margin-bottom: 24px;

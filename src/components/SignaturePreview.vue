@@ -75,12 +75,14 @@ export default {
     }
   },
   computed: {
+    
     headshotStyle() {
       return {
         'vertical-align': 'top',
         'padding': '0 16px 0 0'
       }
     },
+
     titleStyle() {
       return {
         'font' : `700 ${this.fontSizeLarge} ${this.fontFamily}`,
@@ -90,6 +92,7 @@ export default {
         'padding': '8px 0px 2px 0px'
       }
     },
+
     subtitleStyle() {
       return {
         'font' : `400 ${this.fontSizeSmall} ${this.fontFamily}`,
@@ -99,6 +102,7 @@ export default {
         'padding': '0px 0px 2px 0px'
       }
     },
+
     linkStyle() {
       return {
         'font' : `400 ${this.fontSizeSmall} ${this.fontFamily}`,
@@ -108,41 +112,42 @@ export default {
         'padding': '0px 0px 4px 0px'
       }
     },
-    email() {
-      if (!this.form.email.trim()) {
-        return '';
-      }
 
-      return this.form.email.trim();
-    },
-    name() {
-      if (!this.form.name.trim()) {
-        return 'First Last';
-      }
-
-      return this.form.name.trim();
-    },
-    jobTitle() {
-      if (!this.form.jobTitle) {
-        return 'Job Title';
-      }
-
-      return this.form.jobTitle.trim();
-    },
-    phone() {
-      if (!this.form.phone.trim()) {
-        return '';
-      }
-
-      return this.form.phone.trim();
-    },
     headshotUrl() {
       if (!this.form.headshotUrl.trim()) {
         return '';
       }
-
       return this.form.headshotUrl.trim();
-    }
+    },
+
+    email() {
+      if (!this.form.email.trim()) {
+        return '';
+      }
+      return this.form.email.trim();
+    },
+
+    name() {
+      if (!this.form.name.trim()) {
+        return 'First Last';
+      }
+      return this.form.name.trim();
+    },
+
+    jobTitle() {
+      if (!this.form.jobTitle) {
+        return 'Job Title';
+      }
+      return this.form.jobTitle.trim();
+    },
+
+    phone() {
+      if (!this.form.phone.trim()) {
+        return '';
+      }
+      return this.form.phone.trim();
+    },
+
   }
 }
 </script>
@@ -162,7 +167,7 @@ export default {
     margin-left: 10px;
 }
 @media (max-width: 919px) {
-    .preview{
+    .preview {
         display: inline-block;
     }
 }

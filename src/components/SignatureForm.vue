@@ -2,9 +2,21 @@
   <form class="form">
 
     <div class="field">
+      <div class="field-label">Import Details</div>
+      <div class="field-desc">Automatically import details from your Okendo Google account.</div>
+      <button type="button" class="btn btn-google" @click.prevent="importFromGoogle()">
+        {{ importFromGoogleBtnText }}
+      </button>
+    </div>
+
+    <hr>
+
+    <div class="field">
       <div class="field-label">Headshot</div>
-      <div class="field-desc">Upload a square headshot (PNG preferred).</div>
-      <headshot-picker v-model="form.headshotUrl"></headshot-picker>
+      <div class="field-desc">Headshot can be imported from your Okendo Google account, <a href="https://myaccount.google.com/personal-info" target="_blank" rel="noopener noreferrer">you can update it here</a> under <strong>Basic Info > Photo</strong>.</div>
+      <a class="field-control field-headshot" href="https://myaccount.google.com/personal-info" target="_blank" rel="noopener noreferrer">
+        <img v-if="form.headshotUrl" :src="form.headshotUrl" width="96" height="96"/>
+      </a>
     </div>
 
     <div class="field">
@@ -97,12 +109,9 @@
 </template>
 
 <script>
-import HeadshotPicker from './HeadshotPicker.vue';
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  components: {
-    HeadshotPicker
-  },
   name: 'SignatureForm',
   props: [
     'form'
@@ -117,7 +126,7 @@ export default {
       addressBlured: false,
       copiedHtml: false,
       copiedSignature: false,
-      uploadedHeadshot: null
+      importedGoogleDetails: false
     }
   },
   mounted() {
@@ -126,10 +135,23 @@ export default {
     }
   },
   methods: {
+
+    ...mapActions(['signin']),
     generated() {
       let form = this.form;
       localStorage.setItem('form', JSON.stringify(form));
     },
+
+    importFromGoogle() {
+      this.signin().then(() => {
+        this.form.headshotUrl = this.userHeadshotUrl;
+        this.form.name = this.userName;
+        this.form.email = this.userEmail;
+      });
+      this.importedGoogleDetails = true;
+      setTimeout(() => { this.importedGoogleDetails = false }, 2000);
+    },
+
     copySignature() {
       let element = this.$parent.$refs.preview;
 
@@ -156,8 +178,9 @@ export default {
 
       this.generated();
       this.copiedSignature = true;
-      setTimeout(() => { this.copiedSignature = false }, 2000)
+      setTimeout(() => { this.copiedSignature = false }, 2000);
     },
+
     copyHtml() {
       let element = this.$parent.$refs.preview;
 
@@ -185,62 +208,69 @@ export default {
 
       this.generated();
       this.copiedHtml = true;
-      setTimeout(() => { this.copiedHtml = false }, 2000)
+      setTimeout(() => { this.copiedHtml = false }, 2000);
     }
+
   },
   computed: {
+
+    ...mapGetters({
+      userHeadshotUrl: 'userImage',
+      userName: 'userName',
+      userEmail: 'userEmail'
+    }),
+
     emailError() {
       const email = this.form.email.trim();
       const emailPattern = /\S+@\S.\S/;  
       if (emailPattern.test(email) == false && email) {
         return 'Please enter a valid email.';
       }
-
       return '';
     },
+
     nameError() {
       if (!this.form.name.trim()) {
         return 'Please fill in your name.';
       }
-
       return '';
     },
+
     jobTitleError() {
       if (!this.form.jobTitle.trim()) {
         return 'Please fill in your job title.';
       }
-
       return '';
     },
+
     phoneError() {
       const phone = this.form.phone.trim();
       const phoneNumberPattern = /^\+?[0-9-]+$/;  
       if (phoneNumberPattern.test(phone) == false && phone) {
-        return 'Numbers only, use dashes to separate.';
+        return 'Please enter a valid phone number, use dashes to separate number groups.';
       }
-
       return '';
     },
+
     copySignatureBtnText() {
       return this.copiedSignature ? 'Copied!' : 'Copy Signature'
     },
+
     copyHtmlBtnText() {
       return this.copiedHtml ? 'Copied!' : 'Copy HTML'
     },
-    updateGmailSignatureText() {
-      return this.uploadedGmailSignature ? 'Updated!' : 'Update Gmail Signature'
+
+    importFromGoogleBtnText() {
+      return this.importedGoogleDetails ? 'Imported!' : 'Import from Google'
     },
+
     formValid() {
-      if (!this.form.name) {
-        return false;
+      if (this.form.name && this.form.jobTitle.trim()) {
+        return true;
       }
-
-      if (!this.form.jobTitle.trim()) {
-        return false;
-      }
-
-      return true;
+      return false;
     }
+
   }
 }
 </script>
@@ -327,6 +357,42 @@ export default {
     -webkit-appearance:none; /* Safari and Chrome */
     appearance:none;
 }
+.form .field-headshot {
+    display: block;
+    position: relative;
+    margin: 8px 0;
+    border-radius: 100%;
+    width: 96px;
+    height: 96px;
+    background: center / 48px no-repeat url('../assets/empty-headshot.svg'),
+              #F4F4F4;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.form .field-headshot:hover,
+.form .field-headshot:focus {
+    background: #F4F4F4;
+}
+.form .field-headshot::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 100%;
+}
+.form .field-headshot:hover::after,
+.form .field-headshot:focus::after {
+    background: center / 32px no-repeat url('../assets/add-image.svg'),
+                rgba(0, 0, 0, 0.5);
+}
+.form .field-headshot:focus::after {
+    box-shadow: inset 0 0 0 2px #1D2135,
+                inset 0 0 0 4px #fff;
+}
 .field-select::after {
     content: '';
     display: block;
@@ -359,6 +425,12 @@ export default {
 .form .btn:focus {
     box-shadow: inset 0 0 0 2px #1D2135,
                 inset 0 0 0 4px #fff;
+}
+.form .btn-google {
+    color: #1D2135;
+    background: 8px / 32px no-repeat url('../assets/google-logo.svg'),
+                #fff;
+    padding-left: 48px;
 }
 .form .field-submit button {
     margin-right: 20px;
