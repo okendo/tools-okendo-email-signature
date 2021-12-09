@@ -71,9 +71,9 @@ export default {
   },
   mounted() {
     this.initializeGAPI().then(() => {
-      this.form.headshotUrl = this.userHeadshotUrl;
-      this.form.name = this.userName;
-      this.form.email = this.userEmail;
+      this.form.headshotUrl = this.userHeadshotUrl ? this.userHeadshotUrl : this.form.headshotUrl;
+      this.form.name = this.userName ? this.userName : this.form.name;
+      this.form.email = this.userEmail ? this.userEmail : this.form.email;
     });
   },
   methods: mapActions(['initializeGAPI']),

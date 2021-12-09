@@ -4,6 +4,7 @@
     <div class="field">
       <div class="field-label">Import Details</div>
       <div class="field-desc">Automatically import details from your Okendo Google account.</div>
+      <div class="field-error" v-show="googleError" v-html="googleError"></div>
       <button type="button" class="btn btn-google" @click.prevent="importFromGoogle()">
         {{ importFromGoogleBtnText }}
       </button>
@@ -126,7 +127,8 @@ export default {
       addressBlured: false,
       copiedHtml: false,
       copiedSignature: false,
-      importedGoogleDetails: false
+      importedGoogleDetails: false,
+      googleErrorState: ''
     }
   },
   mounted() {
@@ -143,13 +145,19 @@ export default {
     },
 
     importFromGoogle() {
-      this.signin().then(() => {
-        this.form.headshotUrl = this.userHeadshotUrl;
-        this.form.name = this.userName;
-        this.form.email = this.userEmail;
-      });
-      this.importedGoogleDetails = true;
-      setTimeout(() => { this.importedGoogleDetails = false }, 2000);
+      this.signin()
+        .then(() => {
+          this.form.headshotUrl = this.userHeadshotUrl;
+          this.form.name = this.userName;
+          this.form.email = this.userEmail;
+
+          this.googleErrorState = '';
+          this.importedGoogleDetails = true;
+          setTimeout(() => { this.importedGoogleDetails = false }, 2000);
+        })
+        .catch((error) => {
+          this.googleErrorState = error;
+        });
     },
 
     copySignature() {
@@ -248,6 +256,20 @@ export default {
       const phoneNumberPattern = /^\+?[0-9-]+$/;  
       if (phoneNumberPattern.test(phone) == false && phone) {
         return 'Please enter a valid phone number, use dashes to separate number groups.';
+      }
+      return '';
+    },
+
+    googleError() {
+      if (this.googleErrorState) {
+        switch (this.googleErrorState) {
+          case 'popup_closed_by_user':
+            return 'Pop-up closed too quickly, import failed!';
+          case 'access_denied':
+            return 'Access was denied, import failed!';
+          default:
+            return 'Failed to import Google details, try again later!';
+        }
       }
       return '';
     },

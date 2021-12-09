@@ -10,6 +10,9 @@ export default new Vuex.Store({
     user: null
   },
   getters: {
+    isLoggedIn: (state) => {
+      return state.user && state.user.isSignedIn();
+    },
     userImage: (state, getters) => {
       return getters.isLoggedIn
         ? state.user.getBasicProfile().getImageUrl()
