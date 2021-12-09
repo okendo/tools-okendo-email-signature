@@ -157,9 +157,9 @@ export default {
           this.importedGoogleDetails = true;
           setTimeout(() => { this.importedGoogleDetails = false }, 2000);
         })
-        .catch((error) => {
-          console.log(error);
-          this.googleErrorState = error;
+        .catch((e) => {
+          console.log(e);
+          this.googleErrorState = e.error;
         });
     },
 
