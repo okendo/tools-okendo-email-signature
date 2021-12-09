@@ -70,11 +70,10 @@ export default {
     }
   },
   mounted() {
-    this.initializeGAPI().then(() => {
-      this.form.headshotUrl = this.userHeadshotUrl ? this.userHeadshotUrl : this.form.headshotUrl;
-      this.form.name = this.userName ? this.userName : this.form.name;
-      this.form.email = this.userEmail ? this.userEmail : this.form.email;
-    });
+    if (localStorage.getItem('form')) {
+      Object.assign(this.form, JSON.parse(localStorage.getItem('form')));
+    }
+    this.initializeGAPI();
   },
   methods: mapActions(['initializeGAPI']),
   computed: mapGetters({

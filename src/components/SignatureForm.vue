@@ -133,14 +133,10 @@ export default {
       googleErrorState: ''
     }
   },
-  mounted() {
-    if (localStorage.getItem('form')) {
-      Object.assign(this.form, JSON.parse(localStorage.getItem('form')));
-    }
-  },
   methods: {
 
     ...mapActions(['signin']),
+
     generated() {
       let form = this.form;
       localStorage.setItem('form', JSON.stringify(form));
@@ -156,6 +152,7 @@ export default {
           this.googleErrorState = '';
           this.importedGoogleDetails = true;
           setTimeout(() => { this.importedGoogleDetails = false }, 2000);
+          this.generated();
         })
         .catch((e) => {
           console.log(e);
