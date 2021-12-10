@@ -1,6 +1,6 @@
 <template>
   <div class="preview">
-    <table cellspacing="0" cellpadding="0" border="0">
+    <table cellspacing="0" cellpadding="0" border="0" :style="{'line-height': '1'}">
       <tr>
         <td v-if="headshotUrl" :width="headshotSize" :style="headshotStyle">
           <img :src="headshotUrl" :width="headshotSize" :height="headshotSize" :style="{'display': 'block', 'border-radius': '100%'}" />
@@ -14,15 +14,15 @@
               </td>
             </tr>
             <tr v-if="email">
-              <td :style="linkStyle">
-                <a :href="'mailto:' + email">
+              <td>
+                <a :href="'mailto:' + email" :style="linkStyle">
                   {{ email }}
                 </a>
               </td>
             </tr>
             <tr v-if="phone">
-              <td :style="linkStyle">
-                <a :href="'tel:' + phone">
+              <td>
+                <a :href="'tel:' + phone" :style="linkStyle">
                   {{ phone }}
                 </a>
               </td>
@@ -39,8 +39,8 @@
               </td>
             </tr>
             <tr>
-              <td :style="linkStyle">
-                <a href="https://www.okendo.io">
+              <td>
+                <a href="https://www.okendo.io" :style="linkStyle">
                   www.okendo.io
                 </a>
               </td>
@@ -98,8 +98,7 @@ export default {
         'font' : `400 ${this.fontSizeSmall} ${this.fontFamily}`,
         'line-height': this.lineHeightSmall, 
         'color': this.colorSecondary, 
-        'whitespace': 'nowrap', 
-        'padding': '0px 0px 2px 0px'
+        'whitespace': 'nowrap'
       }
     },
 
@@ -108,8 +107,7 @@ export default {
         'font' : `400 ${this.fontSizeSmall} ${this.fontFamily}`,
         'line-height': this.lineHeightSmall, 
         'color': this.colorAccent, 
-        'whitespace': 'nowrap', 
-        'padding': '0px 0px 4px 0px'
+        'whitespace': 'nowrap'
       }
     },
 

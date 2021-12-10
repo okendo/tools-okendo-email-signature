@@ -16,17 +16,25 @@
 
     <div class="field">
       <div class="field-label">Headshot</div>
-      <div class="field-desc">Headshot can be imported from your Okendo Google account, <a href="https://myaccount.google.com/personal-info" target="_blank" rel="noopener noreferrer">you can update it here</a> under <strong>Basic Info > Photo</strong>.</div>
-      <a class="field-control field-headshot" href="https://myaccount.google.com/personal-info" target="_blank" rel="noopener noreferrer">
-        <img v-if="form.headshotUrl" :src="form.headshotUrl" width="96" height="96"/>
-      </a>
+      <div v-if="importedGoogleDetails">
+        <div class="field-desc">Headshot can be imported from your Okendo Google account, <a href="https://myaccount.google.com/personal-info" target="_blank" rel="noopener noreferrer">you can update it here</a> under <strong>Basic Info > Photo</strong>.</div>
+        <a class="field-control field-headshot" href="https://myaccount.google.com/personal-info" target="_blank" rel="noopener noreferrer" title="Go to your Google account settings to update your headshot">
+          <img v-if="form.headshotUrl" :src="form.headshotUrl" width="96" height="96"/>
+        </a>
+      </div>
+      <div v-else-if="!importedGoogleDetails">
+        <div class="field-desc">Enter a direct link to a headshot image (with the file extension included, such as <strong>.PNG</strong> or <strong>.JPG</strong>). Ensure it's hosted somewhere that can be accessed publicly.</div>
+        <div class="field-control field-text">
+          <input type="text" autocomplete="name" v-model="form.headshotUrl"/>
+        </div>
+      </div>
     </div>
 
     <div class="field">
       <div class="field-label">Full Name <span class="required">*</span></div>
       <div class="field-error" v-show="nameError" v-html="nameError"></div>
       <div class="field-control field-text">
-        <input type="text" autocomplete="name" v-model="form.name" v-on:blur="nameBlured = true;" />
+        <input type="text" autocomplete="name" v-model="form.name"/>
       </div>
     </div>
 
@@ -34,7 +42,7 @@
       <div class="field-label">Job Title <span class="required">*</span></div>
       <div class="field-error" v-show="jobTitleError" v-html="jobTitleError"></div>
       <div class="field-control field-text">
-        <input type="text" autocomplete="organization-title" v-model="form.jobTitle" v-on:blur="jobTitleBlured = true;" />
+        <input type="text" autocomplete="organization-title" v-model="form.jobTitle"/>
       </div>
     </div>
 
@@ -42,7 +50,7 @@
       <div class="field-label">Email</div>
       <div class="field-error" v-show="emailError" v-html="emailError"></div>
       <div class="field-control field-text">
-        <input type="text" autocomplete="email" v-model="form.email" v-on:blur="emailBlured = true;" />
+        <input type="text" autocomplete="email" v-model="form.email"/>
       </div>
     </div>
 
@@ -51,14 +59,14 @@
       <div class="field-desc">Enter in the order: country code, area code, number. Use dashes between each number group.</div>
       <div class="field-error" v-show="phoneError" v-html="phoneError"></div>
       <div class="field-control field-text">
-        <input type="text" autocomplete="tel" v-model="form.phone" v-on:blur="phoneBlured = true;" />
+        <input type="text" autocomplete="tel" v-model="form.phone"/>
       </div>
     </div>
 
     <div class="field">
       <div class="field-label">Address <span class="required">*</span></div>
       <div class="field-control field-select">
-        <select v-model="form.address" v-on:blur="addressBlured = true;">
+        <select v-model="form.address">
           <option value="miami">
             Level 8, 360 NW 27th Street, Miami, 33127
           </option>
@@ -85,8 +93,6 @@
       <div class="field-paragraph">
         <ol>
           <li>Click on the <strong>Copy Signature</strong> button above and go to your <a href="https://mail.google.com/mail/u/0/#settings/general" target="_blank" rel="noopener noreferrer">Okendo Gmail account settings</a>.</li>
-          <li>Select the settings gear in your Gmail toolbar in the top-right.</li>
-          <li>Select <strong>See All Settings > General > Signature</strong>.</li>
           <li>Select the <strong>Create New</strong> button to add a new signature.</li>
           <li>Give this signature a name and select <strong>Create</strong>.</li>
           <li>Paste the signature into the WYSIWYG editor.</li>
@@ -121,12 +127,6 @@ export default {
   ],
   data() {
     return {
-      nameBlured: false,
-      jobTitleBlured: false,
-      officeBlured: false,
-      emailBlured: false,
-      phoneBlured: false,
-      addressBlured: false,
       copiedHtml: false,
       copiedSignature: false,
       importedGoogleDetails: false,
