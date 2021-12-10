@@ -23,7 +23,8 @@
         </a>
       </div>
       <div v-else-if="!importedGoogleDetails">
-        <div class="field-desc">Enter a direct link to a headshot image (with the file extension included, such as <strong>.PNG</strong> or <strong>.JPG</strong>). Ensure it's hosted somewhere that can be accessed publicly.</div>
+        <div class="field-desc">Enter a direct link to a headshot image. Ensure it's hosted somewhere that can be accessed publicly.</div>
+        <div class="field-error" v-show="headshotError" v-html="headshotError"></div>
         <div class="field-control field-text">
           <input type="text" autocomplete="name" v-model="form.headshotUrl"/>
         </div>
@@ -270,6 +271,15 @@ export default {
           default:
             return 'Failed to import Google details, please try again!';
         }
+      }
+      return '';
+    },
+
+    headshotError() {
+      const headshot = this.form.headshotUrl.trim();
+      const headshotUrlPattern = /(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif))/;  
+      if (headshotUrlPattern.test(headshot) == false && headshot) {
+        return 'Please enter a valid image URL with the protocol (such as https://) and file extension (such as .png or .jpg) included.';
       }
       return '';
     },
