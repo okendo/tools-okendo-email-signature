@@ -48,7 +48,6 @@
 import LogoFile from './assets/logo.svg?inline'
 import SignatureForm from './components/SignatureForm.vue'
 import SignaturePreview from './components/SignaturePreview.vue'
-import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'App',
@@ -68,19 +67,7 @@ export default {
         address: ''
       }
     }
-  },
-  mounted() {
-    if (localStorage.getItem('form')) {
-      Object.assign(this.form, JSON.parse(localStorage.getItem('form')));
-    }
-    this.initializeGAPI();
-  },
-  methods: mapActions(['initializeGAPI']),
-  computed: mapGetters({
-    userHeadshotUrl: 'userImage',
-    userName: 'userName',
-    userEmail: 'userEmail'
-  })
+  }
 }
 </script>
 

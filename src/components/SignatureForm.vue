@@ -2,32 +2,11 @@
   <form class="form">
 
     <div class="field">
-      <div class="field-label">Import Details</div>
-      <div class="field-desc">Automatically import details from your Okendo Google account.</div>
-      <div class="field-error" v-show="googleError" v-html="googleError"></div>
-      <div class="field-control field-text">
-        <button type="button" class="btn btn-google" @click.prevent="importFromGoogle()">
-          {{ importFromGoogleBtnText }}
-        </button>
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="field">
       <div class="field-label">Headshot</div>
-      <div v-if="importedGoogleDetails">
-        <div class="field-desc">Headshot can be imported from your Okendo Google account, <a href="https://myaccount.google.com/personal-info" target="_blank" rel="noopener noreferrer">you can update it here</a> under <strong>Basic Info > Photo</strong>.</div>
-        <a class="field-control field-headshot" href="https://myaccount.google.com/personal-info" target="_blank" rel="noopener noreferrer" title="Go to your Google account settings to update your headshot">
-          <img v-if="form.headshotUrl" :src="form.headshotUrl" width="96" height="96"/>
-        </a>
-      </div>
-      <div v-else-if="!importedGoogleDetails">
-        <div class="field-desc">Enter a direct link to a headshot image. Ensure it's hosted somewhere that can be accessed publicly.</div>
-        <div class="field-error" v-show="headshotError" v-html="headshotError"></div>
-        <div class="field-control field-text">
-          <input type="text" autocomplete="name" v-model="form.headshotUrl"/>
-        </div>
+      <div class="field-desc">Enter a direct link to a headshot image. Ensure it's hosted somewhere that can be accessed publicly.</div>
+      <div class="field-error" v-show="headshotError" v-html="headshotError"></div>
+      <div class="field-control field-text">
+        <input type="text" autocomplete="name" v-model="form.headshotUrl"/>
       </div>
     </div>
 
@@ -120,8 +99,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-
 export default {
   name: 'SignatureForm',
   props: [
@@ -131,35 +108,13 @@ export default {
     return {
       copiedHtml: false,
       copiedSignature: false,
-      importedGoogleDetails: false,
-      googleErrorState: ''
     }
   },
   methods: {
 
-    ...mapActions(['signin']),
-
     generated() {
       let form = this.form;
       localStorage.setItem('form', JSON.stringify(form));
-    },
-
-    importFromGoogle() {
-      this.signin()
-        .then(() => {
-          this.form.headshotUrl = this.userHeadshotUrl;
-          this.form.name = this.userName;
-          this.form.email = this.userEmail;
-
-          this.googleErrorState = '';
-          this.importedGoogleDetails = true;
-          setTimeout(() => { this.importedGoogleDetails = false }, 2000);
-          this.generated();
-        })
-        .catch((e) => {
-          console.log(e);
-          this.googleErrorState = e.error;
-        });
     },
 
     copySignature() {
@@ -224,12 +179,6 @@ export default {
   },
   computed: {
 
-    ...mapGetters({
-      userHeadshotUrl: 'userImage',
-      userName: 'userName',
-      userEmail: 'userEmail'
-    }),
-
     emailError() {
       const email = this.form.email.trim();
       const emailPattern = /\S+@\S.\S/;  
@@ -269,20 +218,6 @@ export default {
       return '';
     },
 
-    googleError() {
-      if (this.googleErrorState) {
-        switch (this.googleErrorState) {
-          case 'popup_closed_by_user':
-            return 'Pop-up closed too quickly and import failed, consider disabling any extensions (like adblockers) and try again!';
-          case 'access_denied':
-            return 'Access was denied and import failed, consider disabling any extensions (like adblockers) and try again!';
-          default:
-            return 'Failed to import Google details, consider disabling any extensions (like adblockers) and try again!';
-        }
-      }
-      return '';
-    },
-
     headshotError() {
       const headshot = this.form.headshotUrl.trim();
       const headshotUrlPattern = /(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif))/;  
@@ -298,10 +233,6 @@ export default {
 
     copyHtmlBtnText() {
       return this.copiedHtml ? 'Copied!' : 'Copy HTML'
-    },
-
-    importFromGoogleBtnText() {
-      return this.importedGoogleDetails ? 'Imported!' : 'Import from Google'
     },
 
     formValid() {
