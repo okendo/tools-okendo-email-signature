@@ -61,11 +61,11 @@ export default {
     return {
       form: {
         headshotUrl: '',
-        name: 'Human Person',
-        jobTitle: 'Oxygen Enthusiast',
+        name: '',
+        jobTitle: '',
         email: '',
         phone: '',
-        address: 'miami'
+        address: ''
       }
     }
   },

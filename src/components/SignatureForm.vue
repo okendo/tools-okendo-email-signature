@@ -66,6 +66,7 @@
 
     <div class="field">
       <div class="field-label">Address <span class="required">*</span></div>
+      <div class="field-error" v-show="addressError" v-html="addressError"></div>
       <div class="field-control field-select">
         <select v-model="form.address">
           <option value="miami">
@@ -257,6 +258,13 @@ export default {
       const phoneNumberPattern = /^\+?[0-9-]+$/;  
       if (phoneNumberPattern.test(phone) == false && phone) {
         return 'Please enter a valid phone number, use dashes to separate number groups.';
+      }
+      return '';
+    },
+
+    addressError() {
+      if (!this.form.address.trim()) {
+        return 'Please select the nearest Okendo office address.';
       }
       return '';
     },
