@@ -265,11 +265,11 @@ export default {
       if (this.googleErrorState) {
         switch (this.googleErrorState) {
           case 'popup_closed_by_user':
-            return 'Pop-up closed too quickly and import failed, please try again!';
+            return 'Pop-up closed too quickly and import failed, consider disabling any extensions (like adblockers) and try again!';
           case 'access_denied':
-            return 'Access was denied and import failed, please try again!';
+            return 'Access was denied and import failed, consider disabling any extensions (like adblockers) and try again!';
           default:
-            return 'Failed to import Google details, please try again!';
+            return 'Failed to import Google details, consider disabling any extensions (like adblockers) and try again!';
         }
       }
       return '';
