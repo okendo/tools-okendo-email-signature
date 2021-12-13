@@ -49,7 +49,7 @@
       <div class="field-control field-select">
         <select v-model="form.address">
           <option value="miami">
-            Level 8, 360 NW 27th Street, Miami, 33127
+            2222 Ponce de Leon, Miami, FL 33134, United States
           </option>
           <option value="sydney">
             Level 13, 333 George Street, Sydney, 2000

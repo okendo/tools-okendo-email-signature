@@ -32,7 +32,7 @@
             </tr>
             <tr>
               <td :style="subtitleStyle" v-if="form.address === 'miami'">
-                Level 8, 360 NW 27th Street, Miami, 33127
+                2222 Ponce de Leon, Miami, FL 33134, United States
               </td>
               <td :style="subtitleStyle" v-if="form.address === 'sydney'">
                 Level 13, 333 George Street, Sydney, 2000
