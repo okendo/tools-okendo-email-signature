@@ -258,7 +258,7 @@ export default {
 }
 .form .field-label {
     color: #1D2135;
-    font: 700 16px 'Mulish', sans-serif;
+    font: 700 16px 'IBM Plex Sans', sans-serif;
     margin: 0 0 4px;
 }
 .form .field-desc,
@@ -271,7 +271,7 @@ export default {
 }
 .form .field-heading {
     color: #1D2135;
-    font: 700 20px 'Mulish', sans-serif;
+    font: 700 20px 'IBM Plex Sans', sans-serif;
     margin: 0 0 16px;
 }
 .form .field-paragraph {
@@ -296,7 +296,7 @@ export default {
     box-sizing: border-box;
     background: #FFF;
     border: none;
-    font: 400 16px 'Noto Sans', sans-serif;
+    font: 400 16px 'IBM Plex Sans', sans-serif;
     outline: none;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1),
                 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -379,7 +379,7 @@ export default {
 .form .btn {
     position: relative;
     margin: 8px 0;
-    font: 700 16px 'Mulish', sans-serif;
+    font: 700 16px 'IBM Plex Sans', sans-serif;
     color: #fff;
     padding: 16px;
     border-radius: 8px;
