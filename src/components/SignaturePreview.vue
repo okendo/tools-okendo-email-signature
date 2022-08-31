@@ -28,7 +28,8 @@
               </td>
             </tr>
             <tr>
-              <td :style="titleStyle">Okendo Inc.</td>
+              <td :style="titleStyle" v-if="form.address === 'miami'">Okendo Inc.</td>
+              <td :style="titleStyle" v-if="form.address === 'sydney'">Okendo Pty Ltd</td>
             </tr>
             <tr>
               <td :style="subtitleStyle" v-if="form.address === 'miami'">
