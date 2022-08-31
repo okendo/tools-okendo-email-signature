@@ -75,7 +75,7 @@ export default {
 body {
     margin: 0;
     padding: 0;
-    font: 400 16px 'Noto Sans', sans-serif;
+    font: 400 16px 'IBM Plex Sans', sans-serif;
     line-height: 1.5;
     color: #1D2135;
     background: #F4F4F4;
@@ -98,7 +98,7 @@ a:focus {
 }
 h1,h2,h3,h4,h5,h6 {
     font-weight: 700;
-    font-family: 'Mulish', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     margin: 8px 0 16px;
 }
 hr {

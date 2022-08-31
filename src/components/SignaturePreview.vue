@@ -67,7 +67,7 @@ export default {
       colorPrimary: '#1D2135',
       colorSecondary: '#8F9097',
       colorAccent: '#00B69C',
-      fontFamily: "Roboto, sans-serif",
+      fontFamily: "IBM Plex Sans, sans-serif",
       fontSizeSmall: '12px',
       fontSizeLarge: '14px',
       lineHeightSmall: '14px',
