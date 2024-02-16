@@ -15,40 +15,43 @@
             </tr>
             <tr v-if="email">
               <td>
-                <a :href="'mailto:' + email" :style="linkStyle">
+                <a :href="'mailto:' + email" :style="[linkStyle, {'font-size': this.fontSizeLarge}]">
                   {{ email }}
                 </a>
               </td>
             </tr>
             <tr v-if="phone">
               <td>
-                <a :href="'tel:' + phone" :style="linkStyle">
+                <a :href="'tel:' + phone" :style="[linkStyle, {'font-size': this.fontSizeLarge}]">
                   {{ phone }}
                 </a>
               </td>
             </tr>
             <tr>
-              <td :style="titleStyle" v-if="form.address === 'miami'">Okendo Inc.</td>
-              <td :style="titleStyle" v-if="form.address === 'sydney'">Okendo Pty Ltd</td>
+              <td :style="tagLineStyle">9000+ Shopify brands use <a href="https://okendo.io">Okendo</a> | 800+ Shopify <a href="https://apps.shopify.com/okendo-reviews">reviews</a></td>
             </tr>
             <tr>
-              <td :style="subtitleStyle" v-if="form.address === 'miami'">
+              <td :style="{'padding': '8px 0px 16px 0px'}">
+                <img src="../assets/footer.png" width="342" :style="{'display': 'block'}" />
+              </td>
+            </tr>
+            <tr>
+              <td :style="addressStyle" v-if="form.address === 'miami'">Okendo Inc.</td>
+              <td :style="addressStyle " v-if="form.address === 'sydney'">Okendo Pty Ltd</td>
+            </tr>
+            <tr>
+              <td :style="addressStyle" v-if="form.address === 'miami'">
                 2222 Ponce de Leon, Miami, FL 33134, United States
               </td>
-              <td :style="subtitleStyle" v-if="form.address === 'sydney'">
+              <td :style="addressStyle" v-if="form.address === 'sydney'">
                 Level 13, 333 George Street, Sydney, 2000
               </td>
             </tr>
             <tr>
               <td>
-                <a href="https://www.okendo.io" :style="linkStyle">
+                <a href="https://www.okendo.io" :style="[linkStyle, {'font-style': 'italic'}]">
                   www.okendo.io
                 </a>
-              </td>
-            </tr>
-            <tr>
-              <td :style="{'padding': '16px 0px 0px 0px'}">
-                <img src="https://fs.hubspotusercontent00.net/hubfs/2846103/Okendo%20HubSpot%20Assets/Emails/Email%20CTA%20-%20Stats.png" width="280" :style="{'display': 'block'}" />
               </td>
             </tr>
           </table>
@@ -96,10 +99,31 @@ export default {
 
     subtitleStyle() {
       return {
-        'font' : `400 ${this.fontSizeSmall} ${this.fontFamily}`,
+        'font' : `400 ${this.fontSizeLarge} ${this.fontFamily}`,
         'line-height': this.lineHeightSmall, 
         'color': this.colorSecondary, 
         'whitespace': 'nowrap'
+      }
+    },
+
+    addressStyle() {
+      return {
+        'font' : `400 ${this.fontSizeSmall} ${this.fontFamily}`,
+        'line-height': this.lineHeightSmall, 
+        'color': this.colorSecondary, 
+        'whitespace': 'nowrap',
+        'font-style': 'italic'
+      }
+    },
+
+    tagLineStyle() {
+      return {
+        'font' : `400 ${this.fontSizeLarge} ${this.fontFamily}`,
+        'line-height': this.lineHeightLarge, 
+        'color': this.colorPrimary, 
+        'whitespace': 'nowrap',
+        'font-style': 'italic',
+        'padding': '2px 0px'
       }
     },
 
