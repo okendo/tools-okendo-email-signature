@@ -32,7 +32,7 @@
             </tr>
             <tr>
               <td :style="{'padding': '8px 0px 16px 0px'}">
-                <img src="../assets/footer.png" width="342" :style="{'display': 'block'}" />
+                <img src="https://mail.okendo.co/hubfs/Okendo%20HubSpot%20Assets/Emails/Signature%20Image%20-%20Superfans.png" width="342" :style="{'display': 'block'}" />
               </td>
             </tr>
             <tr>
