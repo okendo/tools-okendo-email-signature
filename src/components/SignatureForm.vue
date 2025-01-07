@@ -52,7 +52,7 @@
             2222 Ponce de Leon, Miami, FL 33134, United States
           </option>
           <option value="sydney">
-            Level 13, 333 George Street, Sydney, 2000
+            407/50 Holt St, Surry Hills NSW 2010
           </option>
         </select>
       </div>
