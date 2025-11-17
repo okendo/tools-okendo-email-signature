@@ -28,7 +28,7 @@
               </td>
             </tr>
             <tr>
-              <td :style="tagLineStyle">17,000+ Shopify brands use <a href="https://okendo.io">Okendo</a> | 1,000+ Shopify <a href="https://apps.shopify.com/okendo-reviews">reviews</a></td>
+              <td :style="tagLineStyle">18,000+ Shopify brands use <a href="https://okendo.io">Okendo</a> | 1,200+ Shopify <a href="https://apps.shopify.com/okendo-reviews">reviews</a></td>
             </tr>
             <tr>
               <td :style="{'padding': '8px 0px 16px 0px'}">
